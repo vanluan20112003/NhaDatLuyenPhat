@@ -13,4 +13,14 @@ if (!url || !anonKey) {
   );
 }
 
-export const supabase = createClient(url, anonKey);
+export const supabase = createClient(url, anonKey, {
+  auth: {
+    // Phiên lưu trong localStorage nên còn nguyên sau khi đóng trình duyệt.
+    // (Site tĩnh, không có server nên không dùng cookie được.)
+    persistSession: true,
+    // Tự làm mới access token trước khi hết hạn -> không phải đăng nhập lại
+    autoRefreshToken: true,
+    storageKey: 'ndlp-auth',
+    detectSessionInUrl: false,
+  },
+});

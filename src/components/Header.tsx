@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { asset } from '@/lib/format';
+import HeaderNav from './HeaderNav';
 
 export default function Header() {
   return (
@@ -13,13 +14,7 @@ export default function Header() {
             height={288}
           />
         </Link>
-        <nav className="nav">
-          <Link href="/">Trang chủ</Link>
-          <Link href="/lien-he/">Liên hệ</Link>
-          <Link href="/admin/" className="cta">
-            Đăng nhập
-          </Link>
-        </nav>
+        <HeaderNav />
       </div>
     </header>
   );

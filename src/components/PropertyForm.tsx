@@ -76,6 +76,26 @@ export default function PropertyForm({ property, onDone, onCancel }: Props) {
     setImages((prev) => prev.filter((u) => u !== url));
   }
 
+  /** Đưa ảnh thứ i lên đầu mảng -> thành ảnh bìa */
+  function makeCover(i: number) {
+    setImages((prev) => {
+      const next = [...prev];
+      const [pick] = next.splice(i, 1);
+      return [pick, ...next];
+    });
+  }
+
+  /** Đổi chỗ ảnh thứ i với ảnh liền kề, để sắp thứ tự hiển thị */
+  function move(i: number, step: number) {
+    setImages((prev) => {
+      const j = i + step;
+      if (j < 0 || j >= prev.length) return prev;
+      const next = [...prev];
+      [next[i], next[j]] = [next[j], next[i]];
+      return next;
+    });
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
@@ -309,44 +329,48 @@ export default function PropertyForm({ property, onDone, onCancel }: Props) {
         )}
 
         {images.length > 0 && (
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 10 }}>
-            {images.map((url) => (
-              <div key={url} style={{ position: 'relative' }}>
-                <img
-                  src={url}
-                  alt=""
-                  style={{
-                    width: 96,
-                    height: 72,
-                    objectFit: 'cover',
-                    borderRadius: 7,
-                    border: '1px solid var(--border)',
-                  }}
-                />
-                <button
-                  type="button"
-                  onClick={() => removeImage(url)}
-                  aria-label="Xóa ảnh"
-                  style={{
-                    position: 'absolute',
-                    top: -6,
-                    right: -6,
-                    width: 22,
-                    height: 22,
-                    borderRadius: '50%',
-                    border: 'none',
-                    background: '#b42318',
-                    color: '#fff',
-                    cursor: 'pointer',
-                    fontSize: 13,
-                    lineHeight: 1,
-                  }}
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-          </div>
+          <>
+            <p className="img-hint">
+              Ảnh đầu tiên là <b>ảnh bìa</b> — ảnh hiển thị ngoài trang chủ.
+              Bấm &quot;Đặt làm bìa&quot; để đổi.
+            </p>
+            <div className="img-grid">
+              {images.map((url, i) => (
+                <div key={url} className={`img-item${i === 0 ? ' is-cover' : ''}`}>
+                  <img src={url} alt="" />
+
+                  {i === 0 && <span className="img-cover-tag">Ảnh bìa</span>}
+
+                  <button
+                    type="button"
+                    onClick={() => removeImage(url)}
+                    aria-label="Xóa ảnh"
+                    className="img-del"
+                  >
+                    ×
+                  </button>
+
+                  <div className="img-tools">
+                    {i > 0 && (
+                      <button type="button" onClick={() => makeCover(i)} title="Đặt làm ảnh bìa">
+                        Đặt làm bìa
+                      </button>
+                    )}
+                    {i > 0 && (
+                      <button type="button" onClick={() => move(i, -1)} aria-label="Chuyển lên trước">
+                        ‹
+                      </button>
+                    )}
+                    {i < images.length - 1 && (
+                      <button type="button" onClick={() => move(i, 1)} aria-label="Chuyển ra sau">
+                        ›
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
 

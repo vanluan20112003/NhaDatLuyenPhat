@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
 import type { Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import type { Property } from '@/lib/types';
@@ -214,27 +215,21 @@ function Dashboard({ email }: { email: string }) {
 
   return (
     <div className="container" style={{ padding: '24px 16px 56px' }}>
-      <div className="section-head" style={{ marginTop: 0 }}>
+      <div className="admin-head">
         <h2>Bảng điều khiển</h2>
-        <span className="count">
-          {email}
-          {' · '}
+        <div className="admin-head-actions">
+          <Link href="/" className="btn btn-ghost btn-sm">
+            ← Xem trang web
+          </Link>
           <button
+            className="btn btn-ghost btn-sm"
             onClick={() => supabase.auth.signOut()}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'var(--primary)',
-              cursor: 'pointer',
-              font: 'inherit',
-              padding: 0,
-              textDecoration: 'underline',
-            }}
           >
             Đăng xuất
           </button>
-        </span>
+        </div>
       </div>
+      <p className="admin-user">Đang đăng nhập: {email}</p>
 
       {notice && (
         <div className={`alert ${notice.ok ? 'alert-ok' : 'alert-err'}`}>{notice.text}</div>
@@ -277,6 +272,7 @@ function Dashboard({ email }: { email: string }) {
             <table>
               <thead>
                 <tr>
+                  <th style={{ width: 76 }}>Ảnh</th>
                   <th>Tiêu đề</th>
                   <th>Loại</th>
                   <th>Giá</th>
@@ -289,6 +285,13 @@ function Dashboard({ email }: { email: string }) {
                 {properties.map((p) => (
                   <tr key={p.id}>
                     <td>
+                      {p.images?.[0] ? (
+                        <img src={p.images[0]} alt="" className="admin-thumb" />
+                      ) : (
+                        <span className="admin-thumb admin-thumb-empty">—</span>
+                      )}
+                    </td>
+                    <td data-label="Tiêu đề">
                       {p.title}
                       {p.featured && (
                         <span
@@ -306,17 +309,19 @@ function Dashboard({ email }: { email: string }) {
                         </span>
                       )}
                     </td>
-                    <td>
+                    <td data-label="Loại">
                       {PROPERTY_TYPE_LABEL[p.property_type]}
                       <br />
                       <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>
                         {STATUS_LABEL[p.status]}
                       </span>
                     </td>
-                    <td>{displayPrice(p)}</td>
-                    <td>{[p.district, p.province].filter(Boolean).join(', ') || '—'}</td>
-                    <td>{formatDate(p.created_at)}</td>
-                    <td style={{ whiteSpace: 'nowrap' }}>
+                    <td data-label="Giá">{displayPrice(p)}</td>
+                    <td data-label="Khu vực">
+                      {[p.district, p.province].filter(Boolean).join(', ') || '—'}
+                    </td>
+                    <td data-label="Ngày đăng">{formatDate(p.created_at)}</td>
+                    <td className="td-actions">
                       <button className="btn btn-ghost btn-sm" onClick={() => setEditing(p)}>
                         Sửa
                       </button>{' '}
@@ -353,19 +358,21 @@ function Dashboard({ email }: { email: string }) {
               <tbody>
                 {contacts.map((c) => (
                   <tr key={c.id} className={c.is_read ? '' : 'row-unread'}>
-                    <td>
+                    <td data-label="Họ tên">
                       {!c.is_read && <span className="dot-unread" title="Chưa xem" />}
                       {c.name}
                     </td>
-                    <td>
+                    <td data-label="Điện thoại">
                       <a href={`tel:${c.phone.replace(/\s/g, '')}`} style={{ color: 'var(--primary)' }}>
                         {c.phone}
                       </a>
                     </td>
-                    <td style={{ maxWidth: 280 }}>{c.message || '—'}</td>
-                    <td>{c.property_id ? `#${c.property_id}` : '—'}</td>
-                    <td>{formatDate(c.created_at)}</td>
-                    <td>
+                    <td data-label="Nội dung" style={{ maxWidth: 280 }}>
+                      {c.message || '—'}
+                    </td>
+                    <td data-label="Tin đăng">{c.property_id ? `#${c.property_id}` : '—'}</td>
+                    <td data-label="Ngày gửi">{formatDate(c.created_at)}</td>
+                    <td className="td-actions">
                       <button
                         className="btn btn-danger btn-sm"
                         onClick={() => handleDeleteContact(c)}
