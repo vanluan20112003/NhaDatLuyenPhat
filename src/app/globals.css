@@ -71,7 +71,7 @@ img {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  height: 72px;
+  height: 88px;
 }
 
 .logo {
@@ -81,13 +81,13 @@ img {
 }
 
 .logo img {
-  height: 56px;
+  height: 70px;
   width: auto;
 }
 
 @media (max-width: 520px) {
   .logo img {
-    height: 44px;
+    height: 54px;
   }
 }
 
@@ -608,7 +608,7 @@ tbody tr:hover {
 }
 
 .footer-logo {
-  height: 76px;
+  height: 92px;
   width: auto;
   flex-shrink: 0;
 }

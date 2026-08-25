@@ -11,13 +11,16 @@ export const metadata: Metadata = {
   description:
     'Nhà Đất Luyện Phát: tin đăng mua bán, cho thuê nhà phố, đất nền, căn hộ. Pháp lý rõ ràng, giá tốt, hỗ trợ tận tình.',
   icons: {
-    icon: [{ url: `${base}/favicon.svg`, type: 'image/svg+xml' }],
-    apple: [{ url: `${base}/icon-512.png`, sizes: '512x512' }],
+    icon: [
+      { url: `${base}/favicon-32.png`, sizes: '32x32', type: 'image/png' },
+      { url: `${base}/icon-512.png`, sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [{ url: `${base}/apple-touch-icon.png`, sizes: '180x180' }],
   },
 };
 
 export const viewport = {
-  themeColor: '#0e3b2e',
+  themeColor: '#0b3a6f',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
