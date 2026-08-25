@@ -1,12 +1,16 @@
+/* Bảng màu thương hiệu: xanh lục #0E3B2E · vàng đồng #C9A227 · kem #F5EFE2 */
 :root {
-  --bg: #f7f8fa;
+  --bg: #f7f5f0;
   --surface: #ffffff;
-  --border: #e3e6ea;
-  --text: #1a1f26;
-  --text-dim: #626b7a;
-  --primary: #c8102e;
-  --primary-dark: #9c0c24;
-  --accent: #0b6b3a;
+  --border: #e4e0d6;
+  --text: #1b2420;
+  --text-dim: #5f6b64;
+  --primary: #0e3b2e;
+  --primary-dark: #092720;
+  --gold: #c9a227;
+  --gold-dark: #a8871d;
+  --cream: #f5efe2;
+  --accent: #c9a227;
   --radius: 10px;
   --shadow: 0 1px 3px rgba(16, 24, 40, 0.07), 0 1px 2px rgba(16, 24, 40, 0.04);
   --shadow-lg: 0 8px 24px rgba(16, 24, 40, 0.1);
@@ -67,19 +71,24 @@ img {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  height: 62px;
+  height: 72px;
 }
 
 .logo {
-  font-size: 19px;
-  font-weight: 800;
-  letter-spacing: -0.3px;
-  color: var(--primary);
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
-.logo span {
-  color: var(--text);
+.logo img {
+  height: 56px;
+  width: auto;
+}
+
+@media (max-width: 520px) {
+  .logo img {
+    height: 44px;
+  }
 }
 
 .nav {
@@ -113,7 +122,7 @@ img {
 
 /* ---------- Hero ---------- */
 .hero {
-  background: linear-gradient(135deg, #1a1f26 0%, #2d3642 100%);
+  background: linear-gradient(135deg, #0e3b2e 0%, #16513e 100%);
   color: #fff;
   padding: 48px 0 40px;
 }
@@ -127,7 +136,7 @@ img {
 
 .hero p {
   margin: 0 0 24px;
-  color: #b6bec9;
+  color: #cfd8d2;
   font-size: 16px;
 }
 
@@ -294,7 +303,8 @@ img {
 }
 
 .badge.thue {
-  background: var(--accent);
+  background: var(--gold);
+  color: #3a2f06;
 }
 
 .badge.da-ban {
@@ -309,8 +319,8 @@ img {
   border-radius: 999px;
   font-size: 12px;
   font-weight: 700;
-  background: #f5a524;
-  color: #452c00;
+  background: var(--gold);
+  color: #3a2f06;
 }
 
 .card-body {
@@ -332,7 +342,7 @@ img {
 }
 
 .card-price {
-  color: var(--primary);
+  color: var(--gold-dark);
   font-weight: 800;
   font-size: 17px;
   margin: 2px 0 8px;
@@ -454,7 +464,7 @@ img {
 .price-big {
   font-size: 27px;
   font-weight: 800;
-  color: var(--primary);
+  color: var(--gold-dark);
   letter-spacing: -0.5px;
 }
 
@@ -580,12 +590,25 @@ tbody tr:hover {
 }
 
 .site-footer {
-  background: #1a1f26;
-  color: #97a1ae;
+  background: var(--primary);
+  color: #a8b8b0;
   padding: 28px 0;
   font-size: 14px;
 }
 
 .site-footer strong {
   color: #fff;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-logo {
+  height: 76px;
+  width: auto;
+  flex-shrink: 0;
 }

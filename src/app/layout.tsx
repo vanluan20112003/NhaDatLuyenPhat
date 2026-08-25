@@ -3,10 +3,21 @@ import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
+// basePath phải ghép tay vào đường dẫn icon: Next không tự thêm cho metadata.icons
+const base = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
 export const metadata: Metadata = {
   title: 'Nhà Đất Luyện Phát - Mua bán, cho thuê bất động sản',
   description:
     'Nhà Đất Luyện Phát: tin đăng mua bán, cho thuê nhà phố, đất nền, căn hộ. Pháp lý rõ ràng, giá tốt, hỗ trợ tận tình.',
+  icons: {
+    icon: [{ url: `${base}/favicon.svg`, type: 'image/svg+xml' }],
+    apple: [{ url: `${base}/icon-512.png`, sizes: '512x512' }],
+  },
+};
+
+export const viewport = {
+  themeColor: '#0e3b2e',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
