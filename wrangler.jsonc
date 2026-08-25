@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nhadatluyenphat",
+  "compatibility_date": "2026-08-25",
+
+  // Next.js static export sinh ra thư mục ./out — phục vụ trực tiếp,
+  // không cần Worker script nào cả.
+  "assets": {
+    "directory": "./out",
+    // File không tồn tại -> trả 404.html thay vì lỗi trắng trang
+    "not_found_handling": "404-page"
+  }
+}

@@ -1,8 +1,11 @@
 /**
- * Static export cho GitHub Pages.
- * Repo không phải <user>.github.io nên site nằm ở /NhaDatLuyenPhat
- * => cần basePath. Biến BASE_PATH do workflow truyền vào,
- * để chạy local (npm run dev) vẫn ở "/" cho tiện.
+ * Static export, deploy song song 2 nơi:
+ *
+ *  - GitHub Pages: site nằm ở /NhaDatLuyenPhat (repo không phải <user>.github.io)
+ *    => workflow truyền BASE_PATH=/NhaDatLuyenPhat vào.
+ *  - Cloudflare Workers: site nằm ở gốc "/" => không set BASE_PATH.
+ *
+ * Local (npm run dev) cũng chạy ở "/" cho tiện.
  */
 const basePath = process.env.BASE_PATH ?? '';
 
