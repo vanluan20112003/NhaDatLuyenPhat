@@ -20,7 +20,8 @@ export function displayPrice(p: {
 /** 4500000000 -> "4,5 tỷ" ; 12000000 -> "12 triệu" */
 export function formatPrice(price: number, status?: string): string {
   const suffix = status === 'thue' ? '/tháng' : '';
-  if (!price) return 'Thỏa thuận';
+  // Không nhập giá số và cũng không có giá dạng chữ -> để khách liên hệ hỏi
+  if (!price) return 'Giá thương lượng';
   if (price >= 1_000_000_000) {
     return `${trim(price / 1_000_000_000)} tỷ${suffix}`;
   }

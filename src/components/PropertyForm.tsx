@@ -183,19 +183,20 @@ export default function PropertyForm({ property, onDone, onCancel }: Props) {
       <div className="field-row">
         <div className="field">
           <label htmlFor="price">
-            Giá (VNĐ) * {form.status === 'thue' && <span style={{ fontWeight: 400 }}>— mỗi tháng</span>}
+            Giá (VNĐ){' '}
+            {form.status === 'thue' && <span style={{ fontWeight: 400 }}>— mỗi tháng</span>}
           </label>
           <input
             id="price"
             type="number"
-            required
             min={0}
             value={form.price}
             onChange={(e) => update('price', e.target.value)}
-            placeholder="4500000000"
+            placeholder="Bỏ trống cũng được"
           />
           <small style={{ color: 'var(--text-dim)', fontSize: 12.5 }}>
-            Dùng để lọc theo khoảng giá. Nhập số gần đúng nếu chưa chốt giá.
+            Chỉ dùng để lọc theo khoảng giá ở trang chủ. Bỏ trống thì tin vẫn
+            đăng được, chỉ là không lọt vào bộ lọc giá.
           </small>
         </div>
         <div className="field">
@@ -214,7 +215,7 @@ export default function PropertyForm({ property, onDone, onCancel }: Props) {
       </div>
 
       <div className="field">
-        <label htmlFor="price_text">Giá hiển thị</label>
+        <label htmlFor="price_text">Giá hiển thị trên web</label>
         <input
           id="price_text"
           value={form.price_text}
@@ -222,7 +223,7 @@ export default function PropertyForm({ property, onDone, onCancel }: Props) {
           placeholder="Ví dụ: 8xx triệu / Thương lượng / 4,5 tỷ"
         />
         <small style={{ color: 'var(--text-dim)', fontSize: 12.5 }}>
-          Để trống thì web tự hiển thị từ ô Giá ở trên (
+          Đây là dòng giá khách nhìn thấy. Để trống thì web tự tính từ ô Giá ở trên (
           {form.price ? formatPrice(Number(form.price), form.status) : '…'}).
         </small>
       </div>
