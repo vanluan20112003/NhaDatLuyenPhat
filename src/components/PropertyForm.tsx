@@ -5,7 +5,12 @@ import { supabase } from '@/lib/supabase';
 import type { Property, PropertyStatus, PropertyType } from '@/lib/types';
 import { PROPERTY_TYPE_LABEL, STATUS_LABEL } from '@/lib/types';
 import { formatPrice } from '@/lib/format';
-import { DEFAULT_CONTACT_NAME, DEFAULT_CONTACT_PHONE } from '@/lib/contact';
+import {
+  DEFAULT_CONTACT_NAME,
+  DEFAULT_CONTACT_PHONE,
+  DEFAULT_DISTRICT,
+  DEFAULT_PROVINCE,
+} from '@/lib/contact';
 
 const BUCKET = 'property-images';
 
@@ -30,8 +35,8 @@ export default function PropertyForm({ property, onDone, onCancel }: Props) {
     property_type: (property?.property_type ?? 'nha') as PropertyType,
     status: (property?.status ?? 'ban') as PropertyStatus,
     address: property?.address ?? '',
-    district: property?.district ?? '',
-    province: property?.province ?? '',
+    district: property?.district ?? DEFAULT_DISTRICT,
+    province: property?.province ?? DEFAULT_PROVINCE,
     // Tin mới mặc định để thông tin công ty; sửa tin cũ thì giữ nguyên giá trị đã lưu
     contact_name: property?.contact_name ?? DEFAULT_CONTACT_NAME,
     contact_phone: property?.contact_phone ?? DEFAULT_CONTACT_PHONE,

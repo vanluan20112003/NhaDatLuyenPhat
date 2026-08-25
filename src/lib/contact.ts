@@ -6,10 +6,8 @@ export const ZALO = `https://zalo.me/${PHONE}`;
 export const BRAND = 'Nhà Đất Luyện Phát';
 export const SLOGAN = 'Uy tín tạo giá trị — Đồng hành cùng phát triển';
 
-/**
- * Mặc định điền sẵn ở form đăng tin mới.
- * Khác PHONE ở trên: PHONE là hotline chung hiện trên nút liên hệ nổi
- * và footer, còn số này là người phụ trách tin đăng.
- */
-export const DEFAULT_CONTACT_NAME = 'Nhà Đất Luyện Phát';
-export const DEFAULT_CONTACT_PHONE = '0352231271';
+/** Điền sẵn ở form đăng tin mới — địa bàn chính đang hoạt động */
+export const DEFAULT_CONTACT_NAME = BRAND;
+export const DEFAULT_CONTACT_PHONE = PHONE;
+export const DEFAULT_DISTRICT = 'TP. Thuận An';
+export const DEFAULT_PROVINCE = 'Bình Dương';
