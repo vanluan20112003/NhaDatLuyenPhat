@@ -38,8 +38,8 @@ create table if not exists public.contacts (
   id          bigint generated always as identity primary key,
   name        text not null,
   phone       text not null,
-  email       text,
   message     text,
+  is_read     boolean not null default false,   -- admin đã xem chưa (badge thông báo)
   property_id bigint references public.properties(id) on delete set null,
   created_at  timestamptz not null default now()
 );
@@ -106,6 +106,12 @@ create policy "contacts_auth_read"
   to authenticated
   using (true);
 
+drop policy if exists "contacts_auth_update" on public.contacts;
+create policy "contacts_auth_update"
+  on public.contacts for update
+  to authenticated
+  using (true) with check (true);
+
 drop policy if exists "contacts_auth_delete" on public.contacts;
 create policy "contacts_auth_delete"
   on public.contacts for delete
@@ -136,25 +142,6 @@ create policy "property_images_auth_delete"
   on storage.objects for delete
   to authenticated
   using (bucket_id = 'property-images');
-
--- =====================================================================
--- Dữ liệu mẫu (xóa phần này nếu không cần)
--- =====================================================================
-insert into public.properties
-  (title, description, price, area, bedrooms, bathrooms, property_type, status, address, district, province, featured, contact_name, contact_phone)
-values
-  ('Nhà phố 3 tầng mặt tiền Nguyễn Văn Cừ',
-   'Nhà mới xây, thiết kế hiện đại, gần chợ và trường học. Sổ hồng riêng, công chứng ngay.',
-   4500000000, 85, 3, 3, 'nha', 'ban', '123 Nguyễn Văn Cừ', 'Quận 5', 'TP. Hồ Chí Minh', true,
-   'Anh Luân', '0901234567'),
-  ('Đất nền dự án khu dân cư An Phú',
-   'Lô góc 2 mặt tiền, đường nhựa 12m, hạ tầng hoàn thiện, pháp lý rõ ràng.',
-   2800000000, 120, 0, 0, 'dat', 'ban', 'Khu dân cư An Phú', 'TP. Thủ Đức', 'TP. Hồ Chí Minh', true,
-   'Anh Luân', '0901234567'),
-  ('Căn hộ 2PN full nội thất cho thuê',
-   'Căn hộ tầng cao view thoáng, đầy đủ nội thất, có hồ bơi và phòng gym.',
-   12000000, 65, 2, 2, 'can-ho', 'thue', 'Chung cư Sunrise City', 'Quận 7', 'TP. Hồ Chí Minh', false,
-   'Chị Hoa', '0912345678');
 
 -- =====================================================================
 -- ĐĂNG NHẬP BẰNG USERNAME

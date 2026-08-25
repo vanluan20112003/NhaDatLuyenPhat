@@ -12,9 +12,9 @@ interface Contact {
   id: number;
   name: string;
   phone: string;
-  email: string | null;
   message: string | null;
   property_id: number | null;
+  is_read: boolean;
   created_at: string;
 }
 
@@ -179,6 +179,18 @@ function Dashboard({ email }: { email: string }) {
     }
   }
 
+  const unread = contacts.filter((c) => !c.is_read).length;
+
+  /** Mở tab Liên hệ thì đánh dấu tất cả là đã xem, badge tắt đi */
+  async function markAllRead() {
+    const ids = contacts.filter((c) => !c.is_read).map((c) => c.id);
+    if (ids.length === 0) return;
+
+    // Cập nhật ngay trên giao diện cho mượt, DB chạy nền
+    setContacts((prev) => prev.map((c) => ({ ...c, is_read: true })));
+    await supabase.from('contacts').update({ is_read: true }).in('id', ids);
+  }
+
   async function handleDeleteContact(c: Contact) {
     if (!confirm(`Xóa liên hệ của ${c.name}?`)) return;
     const { error } = await supabase.from('contacts').delete().eq('id', c.id);
@@ -243,9 +255,14 @@ function Dashboard({ email }: { email: string }) {
         </button>
         <button
           className={`btn ${tab === 'contacts' ? '' : 'btn-ghost'}`}
-          onClick={() => setTab('contacts')}
+          onClick={() => {
+            setTab('contacts');
+            markAllRead();
+          }}
+          style={{ position: 'relative' }}
         >
-          Liên hệ ({contacts.length})
+          Yêu cầu tư vấn ({contacts.length})
+          {unread > 0 && <span className="tab-badge">{unread}</span>}
         </button>
         {tab === 'properties' && (
           <button className="btn" onClick={() => setCreating(true)} style={{ marginLeft: 'auto' }}>
@@ -333,7 +350,6 @@ function Dashboard({ email }: { email: string }) {
                 <tr>
                   <th>Họ tên</th>
                   <th>Điện thoại</th>
-                  <th>Email</th>
                   <th>Nội dung</th>
                   <th>Tin đăng</th>
                   <th>Ngày gửi</th>
@@ -342,14 +358,16 @@ function Dashboard({ email }: { email: string }) {
               </thead>
               <tbody>
                 {contacts.map((c) => (
-                  <tr key={c.id}>
-                    <td>{c.name}</td>
+                  <tr key={c.id} className={c.is_read ? '' : 'row-unread'}>
+                    <td>
+                      {!c.is_read && <span className="dot-unread" title="Chưa xem" />}
+                      {c.name}
+                    </td>
                     <td>
                       <a href={`tel:${c.phone.replace(/\s/g, '')}`} style={{ color: 'var(--primary)' }}>
                         {c.phone}
                       </a>
                     </td>
-                    <td>{c.email || '—'}</td>
                     <td style={{ maxWidth: 280 }}>{c.message || '—'}</td>
                     <td>{c.property_id ? `#${c.property_id}` : '—'}</td>
                     <td>{formatDate(c.created_at)}</td>

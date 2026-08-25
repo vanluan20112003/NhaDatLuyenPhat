@@ -17,7 +17,7 @@ export default function Header() {
           <Link href="/">Trang chủ</Link>
           <Link href="/lien-he/">Liên hệ</Link>
           <Link href="/admin/" className="cta">
-            Quản trị
+            Đăng nhập
           </Link>
         </nav>
       </div>

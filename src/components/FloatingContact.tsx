@@ -1,7 +1,4 @@
-const PHONE = '0354434852';
-const PHONE_DISPLAY = '0354 434 852';
-const FACEBOOK = 'https://www.facebook.com/profile.php?id=61587618237744';
-const ZALO = `https://zalo.me/${PHONE}`;
+import { PHONE, PHONE_DISPLAY, FACEBOOK, ZALO } from '@/lib/contact';
 
 /**
  * Cụm nút liên hệ nổi góc phải, kiểu thường thấy trên web thương mại.

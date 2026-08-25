@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function ContactForm({ propertyId, compact = false }: Props) {
-  const [form, setForm] = useState({ name: '', phone: '', email: '', message: '' });
+  const [form, setForm] = useState({ name: '', phone: '', message: '' });
   const [sending, setSending] = useState(false);
   const [result, setResult] = useState<{ ok: boolean; text: string } | null>(null);
 
@@ -27,7 +27,6 @@ export default function ContactForm({ propertyId, compact = false }: Props) {
     const { error } = await supabase.from('contacts').insert({
       name: form.name.trim(),
       phone: form.phone.trim(),
-      email: form.email.trim() || null,
       message: form.message.trim() || null,
       property_id: propertyId ?? null,
     });
@@ -36,7 +35,7 @@ export default function ContactForm({ propertyId, compact = false }: Props) {
       setResult({ ok: false, text: `Gửi không thành công: ${error.message}` });
     } else {
       setResult({ ok: true, text: 'Đã gửi! Chúng tôi sẽ liên hệ lại với bạn sớm.' });
-      setForm({ name: '', phone: '', email: '', message: '' });
+      setForm({ name: '', phone: '', message: '' });
     }
     setSending(false);
   }
@@ -69,19 +68,6 @@ export default function ContactForm({ propertyId, compact = false }: Props) {
           placeholder="09xx xxx xxx"
         />
       </div>
-
-      {!compact && (
-        <div className="field">
-          <label htmlFor="cf-email">Email</label>
-          <input
-            id="cf-email"
-            type="email"
-            value={form.email}
-            onChange={(e) => update('email', e.target.value)}
-            placeholder="email@example.com"
-          />
-        </div>
-      )}
 
       <div className="field">
         <label htmlFor="cf-msg">Nội dung</label>
