@@ -268,6 +268,7 @@ img {
 }
 
 .card-img {
+  display: block;
   position: relative;
   aspect-ratio: 4 / 3;
   background: #e8ebef;
@@ -331,41 +332,95 @@ img {
 }
 
 .card-body h3 {
-  margin: 0 0 6px;
+  margin: 0 0 10px;
   font-size: 15.5px;
-  font-weight: 650;
+  font-weight: 700;
   line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.8em;
+}
+
+.card-body h3 a:hover {
+  color: var(--primary);
+}
+
+/* Mỗi dòng thông số: icon cố định bề ngang để chữ thẳng hàng nhau */
+.card-spec {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin: 0 0 6px;
+  font-size: 13.5px;
+  color: var(--text-dim);
+  line-height: 1.45;
+}
+
+.card-spec .ico {
+  flex-shrink: 0;
+  width: 17px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.card-spec b {
+  color: var(--text);
+  font-weight: 650;
+}
+
+.card-loc {
+  /* Địa chỉ dài thì cắt 2 dòng, không đẩy vỡ card */
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.card-loc > :not(.ico) {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
+.card-specs {
+  margin-bottom: 12px;
+}
+
+/* Giá + nút Xem ngay luôn nằm sát đáy card dù nội dung dài ngắn khác nhau */
+.card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
 .card-price {
   color: var(--gold-dark);
   font-weight: 800;
-  font-size: 17px;
-  margin: 2px 0 8px;
+  font-size: 16px;
+  white-space: nowrap;
 }
 
-.card-loc {
-  color: var(--text-dim);
-  font-size: 13.5px;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.btn-view {
+  padding: 6px 13px;
+  border: 1px dashed var(--primary);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
 }
 
-.card-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  color: var(--text-dim);
-  font-size: 13.5px;
-  margin-top: auto;
-  padding-top: 8px;
-  border-top: 1px solid var(--border);
+.btn-view:hover {
+  background: var(--primary);
+  color: #fff;
+  border-style: solid;
 }
 
 /* ---------- Detail page ---------- */
