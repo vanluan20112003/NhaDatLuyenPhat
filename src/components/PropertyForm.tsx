@@ -73,6 +73,13 @@ export default function PropertyForm({ property, onDone, onCancel }: Props) {
   }
 
   function removeImage(url: string) {
+    const i = images.indexOf(url);
+    const isCover = i === 0;
+    const msg = isCover
+      ? 'Xóa ảnh bìa? Ảnh kế tiếp sẽ thành ảnh bìa mới.'
+      : 'Xóa ảnh này khỏi tin đăng?';
+    if (!confirm(msg)) return;
+
     setImages((prev) => prev.filter((u) => u !== url));
   }
 
@@ -94,6 +101,20 @@ export default function PropertyForm({ property, onDone, onCancel }: Props) {
       [next[i], next[j]] = [next[j], next[i]];
       return next;
     });
+  }
+
+  /** Hủy giữa chừng thì hỏi lại, tránh mất công gõ */
+  function handleCancel() {
+    const touched =
+      form.title.trim() ||
+      form.description.trim() ||
+      form.price.trim() ||
+      form.area.trim() ||
+      form.address.trim() ||
+      images.length > 0;
+
+    if (touched && !confirm('Hủy và bỏ mọi thay đổi chưa lưu?')) return;
+    onCancel();
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -393,7 +414,7 @@ export default function PropertyForm({ property, onDone, onCancel }: Props) {
         <button type="submit" className="btn" disabled={saving || uploading}>
           {saving ? 'Đang lưu...' : isEdit ? 'Lưu thay đổi' : 'Đăng tin'}
         </button>
-        <button type="button" className="btn btn-ghost" onClick={onCancel} disabled={saving}>
+        <button type="button" className="btn btn-ghost" onClick={handleCancel} disabled={saving}>
           Hủy
         </button>
       </div>
