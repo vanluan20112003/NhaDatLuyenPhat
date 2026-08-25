@@ -1546,3 +1546,97 @@ a.contact-line:hover {
   border-color: var(--primary);
   color: #fff;
 }
+
+/* ---------- Mobile: thu gọn hero để tin đăng lọt lên màn hình đầu ---------- */
+@media (max-width: 760px) {
+  .hero {
+    padding: 24px 0 18px;
+  }
+
+  .hero-inner {
+    padding-bottom: 18px;
+    gap: 14px;
+  }
+
+  .hero h1 {
+    font-size: 24px;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  /* Đoạn giới thiệu dài không đáng chiếm chỗ trên màn hình nhỏ */
+  .hero-copy p {
+    font-size: 14.5px;
+    margin-bottom: 12px;
+  }
+
+  /* Khối ký gửi và 3 điểm tin cậy đẩy tin đăng xuống quá xa;
+     thông tin này đã có ở footer và nút liên hệ nổi */
+  .hero-promo,
+  .hero-trust {
+    display: none;
+  }
+
+  .searchbar {
+    padding: 11px;
+    border-radius: 12px;
+  }
+
+  .sb-tabs {
+    margin-bottom: 9px;
+  }
+
+  .section-head {
+    margin: 20px 0 12px;
+  }
+}
+
+/* Màn hình rất nhỏ: rút gọn thêm một bậc */
+@media (max-width: 420px) {
+  .hero {
+    padding: 18px 0 14px;
+  }
+
+  .hero h1 {
+    font-size: 21px;
+  }
+
+  .hero-copy p {
+    /* Chỉ giữ 2 dòng đầu, đủ nói web làm gì */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Mobile: card gọn hơn để một màn hình thấy được nhiều tin */
+@media (max-width: 520px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .card-body {
+    padding: 11px 12px 13px;
+  }
+
+  .card-body h3 {
+    font-size: 15px;
+    min-height: 0;
+    margin-bottom: 8px;
+  }
+
+  .card-spec {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .card-specs {
+    margin-bottom: 9px;
+  }
+
+  .card-foot {
+    padding-top: 10px;
+  }
+}
