@@ -200,17 +200,19 @@ export default function PropertyForm({ property, onDone, onCancel }: Props) {
           </small>
         </div>
         <div className="field">
-          <label htmlFor="area">Diện tích (m²) *</label>
+          <label htmlFor="area">Diện tích (m²)</label>
           <input
             id="area"
             type="number"
-            required
             min={0}
             step="0.1"
             value={form.area}
             onChange={(e) => update('area', e.target.value)}
-            placeholder="85"
+            placeholder="Bỏ trống cũng được"
           />
+          <small style={{ color: 'var(--text-dim)', fontSize: 12.5 }}>
+            Bỏ trống thì web không hiện dòng diện tích.
+          </small>
         </div>
       </div>
 

@@ -50,12 +50,14 @@ export default function PropertyCard({ property: p }: { property: Property }) {
               Phòng tắm: <b>{String(p.bathrooms).padStart(2, '0')}</b>
             </p>
           )}
-          <p className="card-spec">
-            <span className="ico" aria-hidden="true">
-              📐
-            </span>
-            Diện tích: <b>{formatArea(p.area)}</b>
-          </p>
+          {p.area > 0 && (
+            <p className="card-spec">
+              <span className="ico" aria-hidden="true">
+                📐
+              </span>
+              Diện tích: <b>{formatArea(p.area)}</b>
+            </p>
+          )}
           <p className="card-spec">
             <span className="ico" aria-hidden="true">
               🏠

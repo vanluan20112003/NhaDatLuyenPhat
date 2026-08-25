@@ -106,10 +106,12 @@ function PropertyDetail() {
                 <dt>Nhu cầu</dt>
                 <dd>{STATUS_LABEL[p.status]}</dd>
               </div>
-              <div>
-                <dt>Diện tích</dt>
-                <dd>{formatArea(p.area)}</dd>
-              </div>
+              {p.area > 0 && (
+                <div>
+                  <dt>Diện tích</dt>
+                  <dd>{formatArea(p.area)}</dd>
+                </div>
+              )}
               {p.bedrooms > 0 && (
                 <div>
                   <dt>Phòng ngủ</dt>
