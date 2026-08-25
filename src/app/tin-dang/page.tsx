@@ -8,13 +8,13 @@ import type { Property } from '@/lib/types';
 import { PROPERTY_TYPE_LABEL, STATUS_LABEL } from '@/lib/types';
 import { displayPrice, formatArea, formatDate } from '@/lib/format';
 import ContactForm from '@/components/ContactForm';
+import Gallery from '@/components/Gallery';
 
 function PropertyDetail() {
   const id = useSearchParams().get('id');
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeImg, setActiveImg] = useState(0);
 
   useEffect(() => {
     if (!id) {
@@ -78,38 +78,7 @@ function PropertyDetail() {
 
       <div className="detail-grid">
         <div>
-          <div className="gallery-main">
-            {images.length > 0 ? (
-              <img src={images[activeImg]} alt={p.title} />
-            ) : (
-              <div
-                style={{
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#9aa3b0',
-                }}
-              >
-                Chưa có ảnh
-              </div>
-            )}
-          </div>
-
-          {images.length > 1 && (
-            <div className="gallery-thumbs">
-              {images.map((src, i) => (
-                <button
-                  key={src + i}
-                  className={i === activeImg ? 'active' : ''}
-                  onClick={() => setActiveImg(i)}
-                  aria-label={`Ảnh ${i + 1}`}
-                >
-                  <img src={src} alt="" />
-                </button>
-              ))}
-            </div>
-          )}
+          <Gallery images={images} alt={p.title} />
 
           <div className="panel" style={{ marginTop: 18 }}>
             <h1 style={{ margin: '0 0 10px', fontSize: 23, letterSpacing: '-0.4px' }}>

@@ -41,8 +41,11 @@ export default function AdminPage() {
 
 /* ------------------------------------------------------------------ */
 
+/** Username hợp lệ: chữ, số, gạch dưới, chấm — khớp ràng buộc phía database */
+const USERNAME_RE = /^[a-zA-Z0-9_.]{3,32}$/;
+
 function LoginForm() {
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -52,8 +55,43 @@ function LoginForm() {
     setBusy(true);
     setError(null);
 
+    const input = identifier.trim();
+    let email = input;
+
+    // Không có "@" thì coi là username, tra email tương ứng qua RPC.
+    if (!input.includes('@')) {
+      if (!USERNAME_RE.test(input)) {
+        setError('Tên đăng nhập hoặc mật khẩu không đúng.');
+        setBusy(false);
+        return;
+      }
+
+      const { data, error: rpcError } = await supabase.rpc('email_for_username', {
+        p_username: input,
+      });
+
+      if (rpcError) {
+        setError('Không kết nối được máy chủ. Thử lại sau.');
+        setBusy(false);
+        return;
+      }
+      if (!data) {
+        // Báo lỗi chung để người ngoài không dò được username nào có thật
+        setError('Tên đăng nhập hoặc mật khẩu không đúng.');
+        setBusy(false);
+        return;
+      }
+      email = data as string;
+    }
+
     const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setError(error.message);
+    if (error) {
+      setError(
+        error.message === 'Invalid login credentials'
+          ? 'Tên đăng nhập hoặc mật khẩu không đúng.'
+          : error.message
+      );
+    }
     setBusy(false);
   }
 
@@ -64,14 +102,16 @@ function LoginForm() {
         {error && <div className="alert alert-err">{error}</div>}
         <form onSubmit={handleLogin}>
           <div className="field">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="identifier">Tên đăng nhập hoặc Email</label>
             <input
-              id="email"
-              type="email"
+              id="identifier"
+              type="text"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
               autoComplete="username"
+              placeholder="luanadmin hoặc email@example.com"
+              maxLength={254}
             />
           </div>
           <div className="field">
@@ -90,7 +130,9 @@ function LoginForm() {
           </button>
         </form>
         <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 0, marginTop: 14 }}>
-          Tài khoản được tạo trong Supabase Dashboard → Authentication → Users.
+          Tài khoản được tạo trong Supabase Dashboard → Authentication → Users. Muốn
+          đăng nhập bằng tên thay vì email thì thêm dòng tương ứng vào bảng{' '}
+          <code>profiles</code>.
         </p>
       </div>
     </div>

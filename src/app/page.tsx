@@ -26,6 +26,7 @@ export default function HomePage() {
   const [status, setStatus] = useState('');
   const [province, setProvince] = useState('');
   const [priceIdx, setPriceIdx] = useState(0);
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -90,62 +91,129 @@ export default function HomePage() {
   return (
     <>
       <section className="hero">
-        <div className="container">
-          <h1>Tìm ngôi nhà phù hợp với bạn</h1>
-          <p>Tin đăng mua bán và cho thuê bất động sản, pháp lý rõ ràng.</p>
+        <div className="container hero-inner">
+          <div className="hero-copy">
+            <h1>
+              Tìm nhà thông thái
+              <br />
+              Thoải mái an cư
+            </h1>
+            <p>
+              Nhà Đất Luyện Phát tuyển chọn tin đăng nhà phố, đất nền, căn hộ với
+              pháp lý rõ ràng. Hàng trăm bất động sản phù hợp{' '}
+              <b>dành riêng cho bạn</b>. Bắt đầu tìm kiếm ngay!
+            </p>
 
-          <div className="filters">
-            <input
-              type="search"
-              placeholder="Từ khóa, địa chỉ..."
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
-              aria-label="Tìm kiếm theo từ khóa"
-            />
-            <select
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              aria-label="Loại bất động sản"
-            >
-              <option value="">Mọi loại hình</option>
-              {Object.entries(PROPERTY_TYPE_LABEL).map(([k, label]) => (
-                <option key={k} value={k}>
-                  {label}
-                </option>
+            <ul className="hero-trust">
+              <li>
+                <b>{properties.length}</b> tin đang mở bán
+              </li>
+              <li>
+                <b>Pháp lý</b> kiểm chứng
+              </li>
+              <li>
+                <b>Tư vấn</b> tận nơi
+              </li>
+            </ul>
+          </div>
+
+          <aside className="hero-promo">
+            <span className="promo-tag">Nhà Đất Luyện Phát</span>
+            <strong>
+              Ký gửi nhà đất
+              <br />
+              bán nhanh giá tốt
+            </strong>
+            <p>Uy tín tạo giá trị — Đồng hành cùng phát triển</p>
+            <a href="tel:0354434852" className="promo-cta">
+              Gọi 0354 434 852
+            </a>
+          </aside>
+        </div>
+
+        <div className="container">
+          <div className="searchbar">
+            {/* Tab Mua / Thuê: lọc nhanh theo nhu cầu phổ biến nhất */}
+            <div className="sb-tabs" role="tablist" aria-label="Nhu cầu">
+              {[
+                { v: '', label: 'Tất cả' },
+                { v: 'ban', label: 'Mua' },
+                { v: 'thue', label: 'Thuê' },
+              ].map((t) => (
+                <button
+                  key={t.v || 'all'}
+                  role="tab"
+                  aria-selected={status === t.v}
+                  className={status === t.v ? 'active' : ''}
+                  onClick={() => setStatus(t.v)}
+                >
+                  {t.label}
+                </button>
               ))}
-            </select>
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              aria-label="Nhu cầu"
-            >
-              <option value="">Bán &amp; cho thuê</option>
-              <option value="ban">Cần bán</option>
-              <option value="thue">Cho thuê</option>
-            </select>
-            <select
-              value={province}
-              onChange={(e) => setProvince(e.target.value)}
-              aria-label="Tỉnh thành"
-            >
-              <option value="">Mọi tỉnh thành</option>
-              {provinces.map((pv) => (
-                <option key={pv} value={pv}>
-                  {pv}
-                </option>
-              ))}
-            </select>
-            <select
-              value={priceIdx}
-              onChange={(e) => setPriceIdx(Number(e.target.value))}
-              aria-label="Khoảng giá"
-            >
-              {PRICE_RANGES.map((r, i) => (
-                <option key={r.label} value={i}>
-                  {r.label}
-                </option>
-              ))}
-            </select>
+            </div>
+
+            <div className="sb-main">
+              <span className="sb-ico" aria-hidden="true">
+                🔍
+              </span>
+              <input
+                type="search"
+                placeholder="Địa chỉ, khu vực, tên dự án..."
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                aria-label="Tìm kiếm theo từ khóa"
+              />
+              <button
+                type="button"
+                className="sb-more"
+                onClick={() => setShowFilters((v) => !v)}
+                aria-expanded={showFilters}
+              >
+                Bộ lọc {showFilters ? '▴' : '▾'}
+              </button>
+            </div>
+
+            {showFilters && (
+              <div className="sb-filters">
+                <select
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
+                  aria-label="Loại bất động sản"
+                >
+                  <option value="">Mọi loại hình</option>
+                  {Object.entries(PROPERTY_TYPE_LABEL).map(([k, label]) => (
+                    <option key={k} value={k}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  value={province}
+                  onChange={(e) => setProvince(e.target.value)}
+                  aria-label="Tỉnh thành"
+                >
+                  <option value="">Mọi tỉnh thành</option>
+                  {provinces.map((pv) => (
+                    <option key={pv} value={pv}>
+                      {pv}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  value={priceIdx}
+                  onChange={(e) => setPriceIdx(Number(e.target.value))}
+                  aria-label="Khoảng giá"
+                >
+                  {PRICE_RANGES.map((r, i) => (
+                    <option key={r.label} value={i}>
+                      {r.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
         </div>
       </section>

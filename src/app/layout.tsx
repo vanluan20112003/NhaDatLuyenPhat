@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import FloatingContactGate from '@/components/FloatingContactGate';
 
 // basePath phải ghép tay vào đường dẫn icon: Next không tự thêm cho metadata.icons
 const base = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main>{children}</main>
           <Footer />
         </div>
+        <FloatingContactGate />
       </body>
     </html>
   );

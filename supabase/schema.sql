@@ -155,3 +155,56 @@ values
    'Căn hộ tầng cao view thoáng, đầy đủ nội thất, có hồ bơi và phòng gym.',
    12000000, 65, 2, 2, 'can-ho', 'thue', 'Chung cư Sunrise City', 'Quận 7', 'TP. Hồ Chí Minh', false,
    'Chị Hoa', '0912345678');
+
+-- =====================================================================
+-- ĐĂNG NHẬP BẰNG USERNAME
+-- Supabase Auth chỉ nhận email, nên map username -> email qua bảng này.
+-- =====================================================================
+create table if not exists public.profiles (
+  id         uuid primary key references auth.users(id) on delete cascade,
+  username   text unique not null
+             check (username ~ '^[a-zA-Z0-9_.]{3,32}$'),
+  created_at timestamptz not null default now()
+);
+
+alter table public.profiles enable row level security;
+
+-- Không cho anon đọc bảng này (tránh dò danh sách tài khoản).
+-- Việc tra username -> email đi qua hàm RPC bên dưới.
+drop policy if exists "profiles_self_read" on public.profiles;
+create policy "profiles_self_read"
+  on public.profiles for select
+  to authenticated
+  using (id = auth.uid());
+
+-- SECURITY DEFINER: chạy bằng quyền chủ hàm nên đọc được auth.users
+-- mà không phải mở quyền đó cho anon.
+create or replace function public.email_for_username(p_username text)
+returns text
+language plpgsql
+security definer
+set search_path = public, auth
+as $$
+declare
+  v_email text;
+begin
+  -- Chặn đầu vào rác ngay từ cửa: chỉ chữ, số, gạch dưới, chấm
+  if p_username is null or p_username !~ '^[a-zA-Z0-9_.]{3,32}$' then
+    return null;
+  end if;
+
+  select u.email into v_email
+    from public.profiles p
+    join auth.users u on u.id = p.id
+   where lower(p.username) = lower(p_username);
+
+  return v_email;  -- null nếu không có; client báo lỗi chung chung
+end;
+$$;
+
+revoke all on function public.email_for_username(text) from public;
+grant execute on function public.email_for_username(text) to anon, authenticated;
+
+-- Gán username cho tài khoản đã tạo ở Authentication > Users:
+--   insert into public.profiles (id, username)
+--   select id, 'luanadmin' from auth.users where email = 'ban@example.com';
