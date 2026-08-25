@@ -110,7 +110,6 @@ function LoginForm() {
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
               autoComplete="username"
-              placeholder="luanadmin hoặc email@example.com"
               maxLength={254}
             />
           </div>
@@ -129,11 +128,6 @@ function LoginForm() {
             {busy ? 'Đang đăng nhập...' : 'Đăng nhập'}
           </button>
         </form>
-        <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 0, marginTop: 14 }}>
-          Tài khoản được tạo trong Supabase Dashboard → Authentication → Users. Muốn
-          đăng nhập bằng tên thay vì email thì thêm dòng tương ứng vào bảng{' '}
-          <code>profiles</code>.
-        </p>
       </div>
     </div>
   );
