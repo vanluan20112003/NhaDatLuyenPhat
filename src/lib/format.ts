@@ -1,3 +1,22 @@
+/**
+ * Giá hiển thị trên web.
+ * Ưu tiên price_text do người đăng tự nhập ("8xx triệu", "Thương lượng"),
+ * vì tin bất động sản thường không nêu con số chính xác.
+ * Không có thì format từ cột price số.
+ */
+export function displayPrice(p: {
+  price: number;
+  price_text?: string | null;
+  status?: string;
+}): string {
+  const text = p.price_text?.trim();
+  if (text) {
+    // Người đăng tự viết "/tháng" nếu muốn, không tự thêm để tránh lặp
+    return text;
+  }
+  return formatPrice(p.price, p.status);
+}
+
 /** 4500000000 -> "4,5 tỷ" ; 12000000 -> "12 triệu" */
 export function formatPrice(price: number, status?: string): string {
   const suffix = status === 'thue' ? '/tháng' : '';

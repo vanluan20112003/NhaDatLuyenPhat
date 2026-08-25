@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { Property, PropertyStatus, PropertyType } from '@/lib/types';
 import { PROPERTY_TYPE_LABEL, STATUS_LABEL } from '@/lib/types';
+import { formatPrice } from '@/lib/format';
 
 const BUCKET = 'property-images';
 
@@ -21,6 +22,7 @@ export default function PropertyForm({ property, onDone, onCancel }: Props) {
     title: property?.title ?? '',
     description: property?.description ?? '',
     price: property?.price?.toString() ?? '',
+    price_text: property?.price_text ?? '',
     area: property?.area?.toString() ?? '',
     bedrooms: property?.bedrooms?.toString() ?? '0',
     bathrooms: property?.bathrooms?.toString() ?? '0',
@@ -83,6 +85,7 @@ export default function PropertyForm({ property, onDone, onCancel }: Props) {
       title: form.title.trim(),
       description: form.description.trim() || null,
       price: Number(form.price) || 0,
+      price_text: form.price_text.trim() || null,
       area: Number(form.area) || 0,
       bedrooms: Number(form.bedrooms) || 0,
       bathrooms: Number(form.bathrooms) || 0,
@@ -171,6 +174,9 @@ export default function PropertyForm({ property, onDone, onCancel }: Props) {
             onChange={(e) => update('price', e.target.value)}
             placeholder="4500000000"
           />
+          <small style={{ color: 'var(--text-dim)', fontSize: 12.5 }}>
+            Dùng để lọc theo khoảng giá. Nhập số gần đúng nếu chưa chốt giá.
+          </small>
         </div>
         <div className="field">
           <label htmlFor="area">Diện tích (m²) *</label>
@@ -185,6 +191,20 @@ export default function PropertyForm({ property, onDone, onCancel }: Props) {
             placeholder="85"
           />
         </div>
+      </div>
+
+      <div className="field">
+        <label htmlFor="price_text">Giá hiển thị</label>
+        <input
+          id="price_text"
+          value={form.price_text}
+          onChange={(e) => update('price_text', e.target.value)}
+          placeholder="Ví dụ: 8xx triệu / Thương lượng / 4,5 tỷ"
+        />
+        <small style={{ color: 'var(--text-dim)', fontSize: 12.5 }}>
+          Để trống thì web tự hiển thị từ ô Giá ở trên (
+          {form.price ? formatPrice(Number(form.price), form.status) : '…'}).
+        </small>
       </div>
 
       <div className="field-row">

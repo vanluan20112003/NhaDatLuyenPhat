@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Property } from '@/lib/types';
 import { PROPERTY_TYPE_LABEL, STATUS_LABEL } from '@/lib/types';
-import { formatPrice, formatArea } from '@/lib/format';
+import { displayPrice, formatArea } from '@/lib/format';
 
 export default function PropertyCard({ property: p }: { property: Property }) {
   const cover = p.images?.[0];
@@ -65,7 +65,7 @@ export default function PropertyCard({ property: p }: { property: Property }) {
         </div>
 
         <div className="card-foot">
-          <span className="card-price">{formatPrice(p.price, p.status)}</span>
+          <span className="card-price">{displayPrice(p)}</span>
           <Link href={`/tin-dang/?id=${p.id}`} className="btn-view">
             Xem ngay ›
           </Link>

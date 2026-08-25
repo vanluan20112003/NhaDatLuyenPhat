@@ -6,6 +6,8 @@ export interface Property {
   title: string;
   description: string | null;
   price: number;
+  /** Giá dạng chữ ("8xx triệu"); rỗng thì format từ price */
+  price_text: string | null;
   area: number;
   bedrooms: number;
   bathrooms: number;

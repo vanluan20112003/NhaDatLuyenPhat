@@ -5,7 +5,7 @@ import type { Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import type { Property } from '@/lib/types';
 import { PROPERTY_TYPE_LABEL, STATUS_LABEL } from '@/lib/types';
-import { formatPrice, formatDate } from '@/lib/format';
+import { displayPrice, formatDate } from '@/lib/format';
 import PropertyForm from '@/components/PropertyForm';
 
 interface Contact {
@@ -260,7 +260,7 @@ function Dashboard({ email }: { email: string }) {
                         {STATUS_LABEL[p.status]}
                       </span>
                     </td>
-                    <td>{formatPrice(p.price, p.status)}</td>
+                    <td>{displayPrice(p)}</td>
                     <td>{[p.district, p.province].filter(Boolean).join(', ') || '—'}</td>
                     <td>{formatDate(p.created_at)}</td>
                     <td style={{ whiteSpace: 'nowrap' }}>

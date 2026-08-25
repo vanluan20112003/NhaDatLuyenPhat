@@ -8,7 +8,8 @@ create table if not exists public.properties (
   id            bigint generated always as identity primary key,
   title         text        not null,
   description   text,
-  price         numeric     not null default 0,          -- đơn vị: VNĐ
+  price         numeric     not null default 0,          -- đơn vị: VNĐ, dùng để lọc khoảng giá
+  price_text    text,                                     -- giá hiển thị dạng chữ: "8xx triệu", "Thương lượng"
   area          numeric     not null default 0,          -- đơn vị: m2
   bedrooms      int         default 0,
   bathrooms     int         default 0,

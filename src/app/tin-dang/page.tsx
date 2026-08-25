@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import type { Property } from '@/lib/types';
 import { PROPERTY_TYPE_LABEL, STATUS_LABEL } from '@/lib/types';
-import { formatPrice, formatArea, formatDate } from '@/lib/format';
+import { displayPrice, formatArea, formatDate } from '@/lib/format';
 import ContactForm from '@/components/ContactForm';
 
 function PropertyDetail() {
@@ -120,7 +120,7 @@ function PropertyDetail() {
                 📍 {fullAddress}
               </div>
             )}
-            <div className="price-big">{formatPrice(p.price, p.status)}</div>
+            <div className="price-big">{displayPrice(p)}</div>
             <div style={{ color: 'var(--text-dim)', fontSize: 14, marginTop: 4 }}>
               Đăng ngày {formatDate(p.created_at)}
             </div>
